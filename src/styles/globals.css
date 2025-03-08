@@ -1,3 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --background: #f8fafc;
+  --text: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --background: #0f172a;
+    --text: #f1f5f9;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1 {
+  @apply text-4xl font-bold text-center mb-8;
+  background: linear-gradient(to right, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.our-form {
+  @apply flex gap-2 mb-8;
+  animation: slideUp 0.5s ease-out;
+}
+
+.prompt-field {
+  @apply flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-700 
+  bg-white dark:bg-gray-800 shadow-sm focus:ring-2 focus:ring-primary focus:border-transparent;
+  transition: all 0.2s ease;
+}
+
+.prompt-button {
+  @apply px-6 py-2 rounded-lg bg-primary text-white font-semibold
+  hover:bg-primary-dark transform hover:scale-105 active:scale-95;
+  transition: all 0.2s ease;
+}
+
+.loading-spinner {
+  @apply w-8 h-8 mx-auto mb-4;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.answer-area {
+  @apply mt-6 p-6 rounded-xl bg-white dark:bg-gray-800 shadow-lg;
+  animation: fadeIn 0.5s ease-in;
+}
+
+.answer-area img {
+  @apply rounded-lg shadow-md mx-auto;
+  animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 body,
 html {
   padding: 0;
@@ -8,115 +124,6 @@ body {
   font-family: sans-serif;
   line-height: 1.65;
   color: #333;
-}
-
-.answer-area {
-  white-space: pre-wrap;
-  margin-top: 1rem;
-  font-size: 1.15rem;
-}
-
-.our-form {
-  display: flex;
-  margin-bottom: 1rem;
-}
-
-.prompt-field {
-  flex: 1;
-  color: #333;
-  padding: 5px;
-  font-size: 1rem;
-  margin-right: 10px;
-}
-
-.prompt-button {
-  padding: 10px;
-  font-size: 1rem;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  background-color: rgb(46, 98, 255);
-}
-
-@-webkit-keyframes rotate-forever {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@-moz-keyframes rotate-forever {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes rotate-forever {
-  0% {
-    -webkit-transform: rotate(0deg);
-    -moz-transform: rotate(0deg);
-    -ms-transform: rotate(0deg);
-    -o-transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  100% {
-    -webkit-transform: rotate(360deg);
-    -moz-transform: rotate(360deg);
-    -ms-transform: rotate(360deg);
-    -o-transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-.loading-spinner {
-  -webkit-animation-duration: 0.75s;
-  -moz-animation-duration: 0.75s;
-  animation-duration: 0.75s;
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-name: rotate-forever;
-  -moz-animation-name: rotate-forever;
-  animation-name: rotate-forever;
-  -webkit-animation-timing-function: linear;
-  -moz-animation-timing-function: linear;
-  animation-timing-function: linear;
-  height: 30px;
-  width: 30px;
-  border: 8px solid #777;
-  border-right-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-}
-
-.container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 10px 20px;
 }
 
 .container img {

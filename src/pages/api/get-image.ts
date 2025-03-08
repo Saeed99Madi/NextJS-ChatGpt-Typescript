@@ -1,32 +1,59 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Configuration, OpenAIApi } from 'openai';
-
-const configuration = new Configuration({
-  apiKey: process.env.OPEN_AI_KEY,
-});
-const openai = new OpenAIApi(configuration);
+import { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
 
 export default async function handler(
-  req: { body: { prompt: any } },
-  res: {
-    status: (arg0: number) => {
-      (): any;
-      new (): any;
-      json: { (arg0: { text: string | undefined }): void; new (): any };
-    };
-  },
+  req: NextApiRequest,
+  res: NextApiResponse,
 ) {
-  if (typeof req.body.prompt === 'string') {
-    const response = await openai.createImage({
-      prompt: `A wet on wet oil painting of ${req.body.prompt} by Bob Ross.`,
-      n: 1,
-      size: '512x512',
-    });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-    res.status(200).json({ text: response.data.data[0].url });
-  } else {
-    res.status(200).json({
-      text: 'https://images.dog.ceo/breeds/ridgeback-rhodesian/n02087394_1722.jpg',
+  try {
+    // Add content filtering to the prompt
+    const safePrompt = `A safe, family-friendly landscape image of mountains and trees in nature`;
+
+    const response = await axios.post(
+      'https://api.openai.com/v1/images/generations',
+      {
+        prompt: safePrompt,
+        n: 1,
+        size: '512x512',
+        response_format: 'url',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+        },
+      },
+    );
+
+    const imageUrl = response.data.data[0].url;
+    return res.status(200).json({ imageUrl });
+  } catch (error: any) {
+    console.error('OpenAI API error:', error.response?.data || error.message);
+
+    if (error.response?.status === 400) {
+      return res.status(400).json({
+        error:
+          'I apologize, but I can only generate family-friendly images. Let me help you create a beautiful landscape instead.',
+        suggestion:
+          'Try asking for nature scenes, landscapes, or other appropriate content.',
+      });
+    }
+
+    if (error.response?.status === 429) {
+      return res.status(429).json({
+        error: "We're experiencing high demand. Please try again in a moment.",
+      });
+    }
+
+    return res.status(500).json({
+      error:
+        'Something went wrong while generating the image. Please try again.',
+      suggestion:
+        'You might want to try a simpler prompt or wait a moment before retrying.',
     });
   }
 }
