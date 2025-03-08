@@ -14,8 +14,11 @@ export default async function handler(
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: req.body.prompt }],
-        temperature: 0,
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'user', content: req.body.prompt },
+        ],
+        temperature: 0.7,
       },
       {
         headers: {
@@ -29,11 +32,11 @@ export default async function handler(
     const text = response.data.choices[0]?.message?.content || '';
     return res.status(200).json({ text });
   } catch (error: any) {
-    console.error('OpenAI API error:', error);
+    console.error('OpenAI API error:', error.response?.data || error.message);
     if (error.response?.status === 429) {
-      return res
-        .status(429)
-        .json({ error: 'Too many requests. Please try again later.' });
+      return res.status(429).json({
+        error: "We're experiencing high demand. Please try again in a moment.",
+      });
     }
     return res.status(500).json({ error: 'Failed to get response from AI' });
   }
