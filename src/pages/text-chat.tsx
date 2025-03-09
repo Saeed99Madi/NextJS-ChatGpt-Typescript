@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
 
 interface Message {

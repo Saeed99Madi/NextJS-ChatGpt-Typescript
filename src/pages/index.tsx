@@ -8,6 +8,7 @@ const HomePage = () => {
       <h1>AI Assistant</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <button
+          type="button"
           onClick={() => router.push('/text-chat')}
           className="p-6 text-center rounded-xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all"
         >
@@ -16,6 +17,7 @@ const HomePage = () => {
         </button>
 
         <button
+          type="button"
           onClick={() => router.push('/image-generator')}
           className="p-6 text-center rounded-xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all"
         >
