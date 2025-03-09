@@ -1,0 +1,16 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn",
+    "no-console": ["warn", { "allow": ["error"] }],
+    "react/no-danger": "warn",
+    "jsx-a11y/label-has-associated-control": [
+      "error",
+      {
+        "labelAttributes": ["label"],
+        "controlComponents": ["input", "select", "button"],
+        "depth": 3
+      }
+    ]
+  }
+}

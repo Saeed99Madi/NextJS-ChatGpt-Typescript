@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/no-array-index-key */
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
