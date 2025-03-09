@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
+interface Message {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,14 +15,17 @@ export default async function handler(
   }
 
   try {
+    const { messages } = req.body;
+    const conversationHistory: Message[] = [
+      { role: 'system', content: 'You are a helpful assistant.' },
+      ...messages,
+    ];
+
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
         model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: 'You are a helpful assistant.' },
-          { role: 'user', content: req.body.prompt },
-        ],
+        messages: conversationHistory,
         temperature: 0.7,
       },
       {

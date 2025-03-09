@@ -175,3 +175,13 @@ body {
     transform: translateY(0);
   }
 }
+
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 
+  hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 
+  transition-all duration-200;
+}
+
+.nav-link.active {
+  @apply text-primary font-semibold;
+}

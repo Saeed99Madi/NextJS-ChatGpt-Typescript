@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect, useRef } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -9,6 +9,15 @@ const TextChat = () => {
   const [prompt, setPrompt] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +35,7 @@ const TextChat = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ messages: [...messages, userMessage] }),
       });
       const data = await response.json();
 
@@ -64,7 +73,10 @@ const TextChat = () => {
   return (
     <div className="container">
       <h1>AI Chat Assistant</h1>
-      <div className="chat-container mb-4 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-lg max-h-[60vh] overflow-y-auto">
+      <div
+        ref={chatContainerRef}
+        className="chat-container mb-4 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-lg max-h-[60vh] overflow-y-auto"
+      >
         {messages.map((message, index) => (
           <div
             key={index}
